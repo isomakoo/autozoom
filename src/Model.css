@@ -1,0 +1,13 @@
+.model-container{
+    width: 100%;
+    margin: 0;padding: 0;
+}
+.model-item{
+    width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+}
+.model-list{
+    width: 980px;
+}

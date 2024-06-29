@@ -1,0 +1,22 @@
+.modeling-container{
+ width: 100%;
+ margin: 0;
+ padding: 0;
+}
+.modeling-item{
+    width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.model-btn, .logout-btn{
+ background-color: blue;
+ width: 80px;
+ font-size: 16px;
+ border: transparent;
+ color: white;
+ height: 30px;
+ border-radius: 5px;
+}

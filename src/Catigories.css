@@ -1,0 +1,13 @@
+.catigories-container{
+    width: 100%;
+    margin: 0;padding: 0;
+}
+.catigories-item{
+    width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+}
+.catigories-list{
+    width: 980px;
+}

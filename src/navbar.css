@@ -1,0 +1,22 @@
+.navbar-container{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.navbar-item{
+    position: fixed;
+    height: 680px;
+    width: 200px;
+    margin: 0 auto;
+    padding: 0;
+    background-color: rgb(2, 58, 107);
+}
+.navbar-link{
+    margin-left: 50px;
+    text-decoration: none;
+    color: white;
+    font-size: 22px;
+    font-family: sans-serif;
+    line-height: 80px;
+    margin-bottom: 30px;
+}

@@ -1,0 +1,13 @@
+.brend-container{
+    width: 100%;
+    margin: 0;padding: 0;
+}
+.brend-item{
+    width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+}
+.brend-list{
+    width: 980px;
+}
