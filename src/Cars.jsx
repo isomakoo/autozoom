@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, message } from "antd";
 import "./Cars.css"; 
 import "./Modeling.css";
 import Navbar from "./navbar";
@@ -107,6 +107,7 @@ function Cars() {
       deleteCar(idjon);
       setmodoch(false);
     }
+    message.success("Muvafaqatliy uchirildi")
   };
 
   const deleteCar = (id) => {

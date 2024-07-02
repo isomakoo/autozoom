@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import "./Catigories.css";
 import { Button, Modal } from "antd";
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./navbar";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Catigories() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,8 +44,10 @@ function Catigories() {
         if (resp.success) {
           getList();
           handleCancel();
+          toast.success("Kategoriya Muvafaqatliy Qushilidi")
         } else {
           console.error("Kategoriyani qo'shishda xato:", resp);
+          toast.error("Nimadir Xato")
         }
       })
       .catch((error) => {
@@ -81,9 +85,11 @@ function Catigories() {
       .then((res) => res.json())
       .then((resp) => {
         if (resp.success) {
+          toast.success("muvafaqatliy uchirildi")
           getList();
           handleCancel();
         } else {
+          toast.error("Nimadir xato")
           console.error("Kategoriyani o'chirishda xato:", resp);
         }
       })
@@ -101,6 +107,7 @@ function Catigories() {
     if (selectedCategoryId) {
       deleteCategory(selectedCategoryId);
     }
+    message.success("Muvafaqatliy uchirildi")
   };
 
   const showEditModal = (item) => {
@@ -138,9 +145,11 @@ function Catigories() {
           handleCancel();
         } else {
           console.error("Kategoriyani tahrirlashda xato:", resp);
+          toast.success("Kategoriya Muvafaqatliy Tahrirlandi")
         }
       })
       .catch((error) => {
+        toast.error("Nimadir Xato")
         console.error("Ma'lumotlarni tahrirlashda xato:", error);
       });
   };

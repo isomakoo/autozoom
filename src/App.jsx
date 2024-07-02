@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 import "./App.css";
 import Location from "./Location";
 import Cars from "./Cars";
@@ -12,6 +13,7 @@ function App() {
   return (
     <>
       <div className="app-container">
+      <ToastContainer />
         <div className="rout-container">
           <Routes>
             <Route path="/" element={<Location />} />

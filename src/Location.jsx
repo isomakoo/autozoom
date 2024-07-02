@@ -1,6 +1,6 @@
 import axios from 'axios';
 import './Location.css'
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input, Layout, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 function Location() {
@@ -31,7 +31,6 @@ function Location() {
    <div className='login-conatiner'>
      <div className='login'> 
      <div className='loginxon'><Form
-    
     onFinish={onFinish}
     autoComplete="off"
   >
@@ -39,24 +38,21 @@ function Location() {
       label="tel raqam "
       name="phone_number"
       rules={[{ required: true, message: 'Please input your username!' }]}
-      layout='vertical'
-    >
+      Layout='vertical' >
       <Input />
     </Form.Item>
 
     <Form.Item
-    style={{marginTop: '50px'}}
+      Layout='vertical'
       label="Password"
       name="password"
       rules={[{ required: true, message: 'Please input your password!' }]}
-      layout='vertical'
     >
       <Input.Password />
     </Form.Item>
 
     <Form.Item>
       <Button type="primary" htmlType="submit" className='login-btn'>
-         
         Submit
       </Button>
     </Form.Item>
