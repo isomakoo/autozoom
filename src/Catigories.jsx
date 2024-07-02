@@ -5,12 +5,17 @@ import Navbar from "./navbar";
 
 function Catigories() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [nameEn, setNameEn] = useState("");
   const [nameRu, setNameRu] = useState("");
   const [pic, setPic] = useState(null);
-  const [accessToken, setAccessToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNTczNzkzNTUtZDNjYi00NzY1LTgwMGEtNDZhOTU1NWJiOWQyIiwidG9rZW5fdHlwZSI6ImFjY2VzcyIsImlhdCI6MTcxOTY2MTE1NCwiZXhwIjoxNzUxMTk3MTU0fQ.GOoRompLOhNJyChMNC1sstK9_BbZAfff0GZ9ox4pZb4"); // Bu yerga haqiqiy tokenni qo'ying
+  const [accessToken, setAccessToken] = useState(
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNTczNzkzNTUtZDNjYi00NzY1LTgwMGEtNDZhOTU1NWJiOWQyIiwidG9rZW5fdHlwZSI6ImFjY2VzcyIsImlhdCI6MTcxOTY2MTE1NCwiZXhwIjoxNzUxMTk3MTU0fQ.GOoRompLOhNJyChMNC1sstK9_BbZAfff0GZ9ox4pZb4"
+  );
   const [navbar, setNavbar] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -27,7 +32,7 @@ function Catigories() {
     fetch("https://autoapi.dezinfeksiyatashkent.uz/api/categories", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
       body: formData,
     })
@@ -47,6 +52,8 @@ function Catigories() {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIsEditModalOpen(false);
+    setIsDeleteModalOpen(false);
   };
 
   const getList = () => {
@@ -63,6 +70,83 @@ function Catigories() {
     getList();
   }, []);
 
+  const deleteCategory = (id) => {
+    fetch(`https://autoapi.dezinfeksiyatashkent.uz/api/categories/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        if (resp.success) {
+          getList();
+          handleCancel();
+        } else {
+          console.error("Kategoriyani o'chirishda xato:", resp);
+        }
+      })
+      .catch((error) => {
+        console.error("Ma'lumotlarni o'chirishda xato:", error);
+      });
+  };
+
+  const showDeleteModal = (id) => {
+    setSelectedCategoryId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedCategoryId) {
+      deleteCategory(selectedCategoryId);
+    }
+  };
+
+  const showEditModal = (item) => {
+    setSelectedCategoryId(item.id);
+    console.log(selectedCategoryId);
+    setNameEn(item.name_en);
+    setNameRu(item.name_ru);
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name_en", nameEn);
+    formData.append("name_ru", nameRu);
+    if (pic) {
+      formData.append("images", pic);
+    }
+
+    fetch(
+      `https://autoapi.dezinfeksiyatashkent.uz/api/categories/${selectedCategoryId}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      }
+    )
+      .then((res) => res.json())
+      .then((resp) => {
+        if (resp.success) {
+          getList();
+          handleCancel();
+        } else {
+          console.error("Kategoriyani tahrirlashda xato:", resp);
+        }
+      })
+      .catch((error) => {
+        console.error("Ma'lumotlarni tahrirlashda xato:", error);
+      });
+  };
+ const handleLogout = () => {
+    setAccessToken(""); 
+    history.push("/login");
+  };
   return (
     <>
       <div className="catigories-container">
@@ -72,7 +156,14 @@ function Catigories() {
             <div>
               <div className="modeling-item">
                 <Button type="primary" onClick={showModal}>
-                  Modalni ochish
+                  Add
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={handleLogout}
+                  style={{ marginBottom: "20px" }}
+                >
+                  Logout
                 </Button>
                 <Modal
                   title="Kategoriya qo'shish"
@@ -118,6 +209,7 @@ function Catigories() {
                     <th>Inglizcha nomi</th>
                     <th>Ruscha nomi</th>
                     <th>Rasm</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -132,6 +224,60 @@ function Catigories() {
                           style={{ width: "100px" }}
                           alt={`Image of ${item.name_en}`}
                         />
+                      </td>
+                      <td>
+                        <Button
+                          type="primary"
+                          onClick={() => showEditModal(item)}
+                        >
+                          Edit
+                        </Button>
+                        <Modal
+                          title="Kategoriyani tahrirlash"
+                          open={isEditModalOpen}
+                          onCancel={handleCancel}
+                          footer={null}
+                        >
+                          <form onSubmit={handleEditSubmit}>
+                            <input
+                              type="text"
+                              required
+                              placeholder="Inglizcha nomi"
+                              value={nameEn}
+                              onChange={(e) => setNameEn(e.target.value)}
+                            />
+                            <br />
+                            <input
+                              type="text"
+                              required
+                              placeholder="Ruscha nomi"
+                              value={nameRu}
+                              onChange={(e) => setNameRu(e.target.value)}
+                            />
+                            <br />
+                            <input
+                              type="file"
+                              onChange={(e) => setPic(e.target.files[0])}
+                            />
+                            <br />
+                            <button type="submit">Tahrirlash</button>
+                          </form>
+                        </Modal>
+                        <Button
+                          type="primary"
+                          danger
+                          onClick={() => showDeleteModal(item.id)}
+                        >
+                          Delete
+                        </Button>
+                        <Modal
+                          title="Kategoriyani o'chirish"
+                          open={isDeleteModalOpen}
+                          onOk={confirmDelete}
+                          onCancel={handleCancel}
+                        >
+                          <p>Bu kategoriyani o'chirishni xohlaysizmi?</p>
+                        </Modal>
                       </td>
                     </tr>
                   ))}
