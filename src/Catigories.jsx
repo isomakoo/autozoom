@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./Catigories.css";
 import { Button, Modal } from "antd";
 import Navbar from "./navbar";
+import { useNavigate } from "react-router-dom";
 
 function Catigories() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -143,9 +144,9 @@ function Catigories() {
         console.error("Ma'lumotlarni tahrirlashda xato:", error);
       });
   };
+  const navigate=useNavigate();
  const handleLogout = () => {
-    setAccessToken(""); 
-    history.push("/login");
+     navigate("/")
   };
   return (
     <>
@@ -227,6 +228,7 @@ function Catigories() {
                       </td>
                       <td>
                         <Button
+                          className="editjon-btn"
                           type="primary"
                           onClick={() => showEditModal(item)}
                         >

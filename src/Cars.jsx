@@ -3,6 +3,7 @@ import { Button, Modal } from "antd";
 import "./Cars.css"; 
 import "./Modeling.css";
 import Navbar from "./navbar";
+import { useNavigate } from "react-router-dom";
 
 function Cars() {
   const accessToken =
@@ -37,7 +38,10 @@ function Cars() {
     setNameSlug(item.city.slug); 
     console.log(item.id);
   };
-
+  const  navigate = useNavigate();
+  const navigi=()=>{
+    navigate('/')
+  }
   const handleCancel = () => {
     setedit(false);
     setidjon(null);
@@ -149,8 +153,8 @@ function Cars() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("brand.title", name_title);
-    formData.append("city.slug", name_slug);
+    formData.append("color", name_title);
+    formData.append("year", name_slug);
     if (images) {
       formData.append("brand.image_src", images);
     }
@@ -222,6 +226,7 @@ function Cars() {
               </form>
             </Modal>
             <Button
+              onClick={navigi}
               type="primary"
               style={{ marginBottom: "20px" }}
             >
@@ -242,8 +247,8 @@ function Cars() {
               {navid.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{item.brand.title}</td>
-                  <td>{item.city.slug}</td>
+                  <td>{item.color}</td>
+                  <td>{item.year}</td>
                   <td>
                     <img
                       src={`https://autoapi.dezinfeksiyatashkent.uz/api/uploads/images/${item.brand.image_src}`}
@@ -257,10 +262,10 @@ function Cars() {
                       type="primary"
                       onClick={(e) => editbutton(e, item)}
                     >
-                      Tahrirlash
+                     Edit
                     </Button>
                     <Button type="primary" danger onClick={(e) => deletbutton(e, item)}>
-                      O'chirish
+                     Delet
                     </Button>
                   </td>
                 </tr>

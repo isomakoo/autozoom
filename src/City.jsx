@@ -16,14 +16,14 @@ function Brend() {
   });
 
   useEffect(() => {
-    fetch("https://autoapi.dezinfeksiyatashkent.uz/api/brands")
+    fetch("https://autoapi.dezinfeksiyatashkent.uz/api/cities")
       .then((res) => res.json())
       .then((data) => setList(data?.data || []))
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
   const getList = () => {
-    fetch("https://autoapi.dezinfeksiyatashkent.uz/api/brands")
+    fetch("https://autoapi.dezinfeksiyatashkent.uz/api/citiesx")
       .then((res) => res.json())
       .then((data) => setList(data?.data || []))
       .catch((error) => console.error("Error fetching data:", error));
@@ -132,6 +132,7 @@ function Brend() {
                 <tr>
                   <th>Index</th>
                   <th>En name</th>
+                  <th>text</th>
                   <th>Images</th>
                   <th>Action</th>
                 </tr>
@@ -140,7 +141,8 @@ function Brend() {
                 {list.map((item, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{item.title}</td>
+                    <td>{item.name}</td>
+                    <td>{item.text}</td>
                     <td>
                       <img
                         src={`https://autoapi.dezinfeksiyatashkent.uz/api/uploads/images/${item.image_src}`}
